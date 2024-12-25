@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Результаты голосования</title>
+  </head>
+  <body>
+    <script>
+      async function showResultsModal() {
+        const id = 1; // ID ресурса на сервере
+        const url = `https://676a7b4a863eaa5ac0de85a8.mockapi.io/radio/Survey/${id}`;
+
+        try {
+          // Получаем текущие данные
+          const response = await fetch(url);
+          const survey = await response.json();
+
+          // Создаем контейнер модального окна
+          const modal = document.createElement("div");
+          modal.style.position = "fixed";
+          modal.style.top = "0";
+          modal.style.left = "0";
+          modal.style.width = "100%";
+          modal.style.height = "100%";
+          modal.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+          modal.style.display = "flex";
+          modal.style.alignItems = "center";
+          modal.style.justifyContent = "center";
+          modal.style.zIndex = "1000";
+
+          // Внутреннее окно
+          const innerWindow = document.createElement("div");
+          innerWindow.style.backgroundColor = "#222";
+          innerWindow.style.padding = "20px";
+          innerWindow.style.borderRadius = "10px";
+          innerWindow.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
+          innerWindow.style.textAlign = "center";
+          innerWindow.style.width = "300px";
+          modal.appendChild(innerWindow);
+
+          // Заголовок модального окна
+          const title = document.createElement("h2");
+          title.textContent = "Результати голосування";
+          title.style.color = "#fff";
+          title.style.marginBottom = "20px";
+          title.style.fontSize = "18px";
+          innerWindow.appendChild(title);
+
+          // Контейнер для результатов
+          const resultsContainer = document.createElement("div");
+          resultsContainer.style.display = "flex";
+          resultsContainer.style.flexDirection = "column";
+          resultsContainer.style.gap = "10px";
+          innerWindow.appendChild(resultsContainer);
+          const ANSWER = [
+            "Файна 20-ка",
+            "Та ти Шо",
+            "Ляси-тряси",
+            "Авто портрет",
+          ];
+          let index = 0;
+          // Добавляем результаты в окно
+          Object.keys(survey).forEach((key) => {
+            if (key.startsWith("answer")) {
+              const result = document.createElement("div");
+              result.textContent = `${ANSWER[index]}: ${survey[key]}`;
+              index++;
+              result.style.color = "#fff";
+              result.style.fontSize = "16px";
+              resultsContainer.appendChild(result);
+            }
+          });
+
+          // Кнопка закрытия
+          const closeButton = document.createElement("button");
+          closeButton.textContent = "Оновлення";
+          closeButton.style.marginTop = "20px";
+          closeButton.style.padding = "10px 20px";
+          closeButton.style.fontSize = "16px";
+          closeButton.style.color = "#fff";
+          closeButton.style.backgroundColor = "#333";
+          closeButton.style.border = "1px solid #444";
+          closeButton.style.borderRadius = "5px";
+          closeButton.style.cursor = "pointer";
+          closeButton.style.transition = "background-color 0.3s";
+          closeButton.addEventListener("mouseover", () => {
+            closeButton.style.backgroundColor = "#555";
+          });
+          closeButton.addEventListener("mouseout", () => {
+            closeButton.style.backgroundColor = "#333";
+          });
+          closeButton.addEventListener("click", () => {
+            // document.body.removeChild(modal);
+            location.reload();
+          });
+          innerWindow.appendChild(closeButton);
+
+          // Добавляем модальное окно в документ
+          document.body.appendChild(modal);
+        } catch (error) {
+          console.error("Error fetching survey results:", error);
+        }
+      }
+
+      showResultsModal();
+    </script>
+  </body>
+</html>
