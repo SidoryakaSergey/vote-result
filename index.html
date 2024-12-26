@@ -8,15 +8,13 @@
   <body>
     <script>
       async function showResultsModal() {
-        const id = 1; // ID ресурса на сервере
+        const id = 1;
         const url = `https://676a7b4a863eaa5ac0de85a8.mockapi.io/radio/Survey/${id}`;
 
         try {
-          // Получаем текущие данные
           const response = await fetch(url);
           const survey = await response.json();
 
-          // Создаем контейнер модального окна
           const modal = document.createElement("div");
           modal.style.position = "fixed";
           modal.style.top = "0";
@@ -29,7 +27,6 @@
           modal.style.justifyContent = "center";
           modal.style.zIndex = "1000";
 
-          // Внутреннее окно
           const innerWindow = document.createElement("div");
           innerWindow.style.backgroundColor = "#222";
           innerWindow.style.padding = "20px";
@@ -39,7 +36,6 @@
           innerWindow.style.width = "300px";
           modal.appendChild(innerWindow);
 
-          // Заголовок модального окна
           const title = document.createElement("h2");
           title.textContent = "Результати голосування";
           title.style.color = "#fff";
@@ -47,7 +43,6 @@
           title.style.fontSize = "18px";
           innerWindow.appendChild(title);
 
-          // Контейнер для результатов
           const resultsContainer = document.createElement("div");
           resultsContainer.style.display = "flex";
           resultsContainer.style.flexDirection = "column";
@@ -55,12 +50,14 @@
           innerWindow.appendChild(resultsContainer);
           const ANSWER = [
             "Файна 20-ка",
-            "Та ти Шо",
-            "Ляси-тряси",
-            "Авто портрет",
+            "ТаТиШо",
+            "Тільки для Вас (Привітання)",
+            "Три Факти",
+            "Автопортрет",
+            "Ляси Тряси",
           ];
           let index = 0;
-          // Добавляем результаты в окно
+
           Object.keys(survey).forEach((key) => {
             if (key.startsWith("answer")) {
               const result = document.createElement("div");
@@ -72,7 +69,6 @@
             }
           });
 
-          // Кнопка закрытия
           const closeButton = document.createElement("button");
           closeButton.textContent = "Оновлення";
           closeButton.style.marginTop = "20px";
@@ -91,18 +87,15 @@
             closeButton.style.backgroundColor = "#333";
           });
           closeButton.addEventListener("click", () => {
-            // document.body.removeChild(modal);
             location.reload();
           });
           innerWindow.appendChild(closeButton);
 
-          // Добавляем модальное окно в документ
           document.body.appendChild(modal);
         } catch (error) {
           console.error("Error fetching survey results:", error);
         }
       }
-
       showResultsModal();
     </script>
   </body>

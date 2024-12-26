@@ -8,12 +8,9 @@
   <body>
     <h1>НАШ САЙТ</h1>
     <script>
-      // Функция для отображения модального окна голосования
       function createModal() {
-        // Проверяем, было ли уже показано окно
         if (localStorage.getItem("modalSeen")) return;
 
-        // Создаем контейнер модального окна
         const modal = document.createElement("div");
         modal.style.position = "fixed";
         modal.style.top = "0";
@@ -26,7 +23,6 @@
         modal.style.justifyContent = "center";
         modal.style.zIndex = "1000";
 
-        // Внутреннее окно
         const innerWindow = document.createElement("div");
         innerWindow.style.backgroundColor = "#222";
         innerWindow.style.padding = "20px";
@@ -36,7 +32,6 @@
         innerWindow.style.width = "350px";
         modal.appendChild(innerWindow);
 
-        // Заголовок модального окна
         const title = document.createElement("h2");
         title.textContent = "Оберіть улюблену програму Шлягер ФМ";
         title.style.color = "#fff";
@@ -44,22 +39,21 @@
         title.style.fontSize = "18px";
         innerWindow.appendChild(title);
 
-        // Контейнер для кнопок
         const buttonContainer = document.createElement("div");
         buttonContainer.style.display = "flex";
         buttonContainer.style.flexDirection = "column";
         buttonContainer.style.gap = "10px";
         innerWindow.appendChild(buttonContainer);
 
-        // Массив с текстом кнопок и соответствующими полями
         const options = [
           { text: "Файна 20-ка", field: "answer1" },
-          { text: "Та ти Шо", field: "answer2" },
-          { text: "Ляси-тряси", field: "answer3" },
-          { text: "Авто портрет", field: "answer4" },
+          { text: "ТаТиШо", field: "answer2" },
+          { text: "Тільки для Вас (Привітання)", field: "answer3" },
+          { text: "Три Факти", field: "answer4" },
+          { text: "Автопортрет", field: "answer5" },
+          { text: "Ляси Тряси", field: "answer6" },
         ];
 
-        // Создаем кнопки для вариантов
         options.forEach((option) => {
           const button = document.createElement("button");
           button.textContent = option.text;
@@ -85,26 +79,21 @@
           buttonContainer.appendChild(button);
         });
 
-        // Добавляем модальное окно в документ
         document.body.appendChild(modal);
       }
 
-      // Функция для обработки голосования
       async function handleVote(option, modal) {
-        const id = 1; // ID ресурса на сервере
+        const id = 1;
         const url = `https://676a7b4a863eaa5ac0de85a8.mockapi.io/radio/Survey/${id}`;
 
         try {
-          // Получаем текущие данные
           const response = await fetch(url);
           const survey = await response.json();
 
-          // Увеличиваем значение выбранного ответа
           survey[option] += 1;
 
-          // Отправляем обновленные данные на сервер
           await fetch(url, {
-            method: "PUT", // Или PATCH
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
@@ -115,14 +104,10 @@
         } catch (error) {
           console.error("Error updating vote:", error);
         } finally {
-          // Убираем модальное окно после голосования
           document.body.removeChild(modal);
-
-          // Сохраняем состояние в localStorage
           localStorage.setItem("modalSeen", "true");
         }
       }
-
       window.onload = createModal;
     </script>
   </body>
