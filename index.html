@@ -57,12 +57,13 @@
             "Ляси Тряси",
           ];
           let index = 0;
-
+          let sum = 0;
           Object.keys(survey).forEach((key) => {
             if (key.startsWith("answer")) {
               const result = document.createElement("div");
               result.textContent = `${ANSWER[index]}: ${survey[key]}`;
               index++;
+              sum += survey[key];
               result.style.color = "#fff";
               result.style.fontSize = "16px";
               resultsContainer.appendChild(result);
@@ -89,7 +90,20 @@
           closeButton.addEventListener("click", () => {
             location.reload();
           });
+
+          const HR = document.createElement("hr");
+
+          // innerWindow.appendChild(HR);
+
           innerWindow.appendChild(closeButton);
+
+          innerWindow.appendChild(HR);
+
+          const spanSum = document.createElement("p");
+          spanSum.style.fontSize = "18px";
+          spanSum.style.color = "#fff";
+          spanSum.textContent = "Усього: " + sum;
+          innerWindow.appendChild(spanSum);
 
           document.body.appendChild(modal);
         } catch (error) {
